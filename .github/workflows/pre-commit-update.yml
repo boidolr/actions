@@ -1,0 +1,22 @@
+name: pre-commit update
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: 13 7 */7 * *
+
+jobs:
+  pre-commit-update:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH: main
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: boidolr/actions/update-precommit@main
+
+    - name: Push pre-commit changes
+      uses: boidolr/actions/git-push@main
+      with:
+        message: Update pre-commit config
+        branch: ${{ env.BRANCH }}
