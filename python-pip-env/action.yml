@@ -1,4 +1,3 @@
-# See https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
 name: "Setup python with pip cache"
 description: "Setup python pip cache with cache key"
 

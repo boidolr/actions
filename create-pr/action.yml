@@ -11,6 +11,10 @@ inputs:
   branch:
     required: true
     description: Branch to create pull request from
+  reviewer:
+    required: false
+    description: Reviewer to add to the pull request
+    default: ""
 outputs: {}
 
 runs:
@@ -27,10 +31,19 @@ runs:
             repo,
           });
 
-          await github.rest.pulls.create({
+          const { data: { number: pull_number } } = await github.rest.pulls.create({
             owner,
             repo,
             title: '${{ inputs.title }}',
             head: '${{ inputs.branch }}',
             base: default_branch,
           });
+
+          const reviewer = '${{ inputs.reviewer }}';
+          if (reviewer) {
+            await github.rest.pulls.requestReviewers({
+              owner,
+              repo,
+              pull_number,
+            });
+          }

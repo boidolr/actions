@@ -1,4 +1,3 @@
-# See https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
 name: "Setup git user and push changes"
 description: "Setup git user and push changes"
 
