@@ -31,18 +31,16 @@ runs:
     - name: Check for changes
       id: git-check-changes
       run: |
-        UPDATED=$(if [[ -z "$(git status --porcelain)" ]]; then echo "false"; else echo "true"; fi)
+        UPDATED=$(if [[ -z "$(git -C '${{ inputs.working-directory }}' status --porcelain)" ]]; then echo "false"; else echo "true"; fi)
         echo "::set-output name=updated::${UPDATED}"
       shell: bash
-      working-directory: "${{ inputs.working-directory }}"
 
     - name: Commit & push changes
       if: >
         steps.git-check-changes.outputs.updated == 'true'
       run: |
-        git config user.name "${{ inputs.user-name }}"
-        git config user.email "${{ inputs.user-email }}"
-        git commit -am "${{ inputs.message }}"
-        git push origin HEAD:"${{ inputs.branch }}"
+        git -C '${{ inputs.working-directory }}' config user.name '${{ inputs.user-name }}'
+        git -C '${{ inputs.working-directory }}' config user.email '${{ inputs.user-email }}'
+        git -C '${{ inputs.working-directory }}' commit -am '${{ inputs.message }}'
+        git -C '${{ inputs.working-directory }}' push origin HEAD:'${{ inputs.branch }}'
       shell: bash
-      working-directory: "${{ inputs.working-directory }}"
