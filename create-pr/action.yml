@@ -1,5 +1,5 @@
-name: "Create pull request"
-description: "Creates pull request from branch against main branch"
+name: Create pull request
+description: Creates pull request from branch against main branch
 
 inputs:
   github-token:
@@ -14,36 +14,36 @@ inputs:
   reviewer:
     required: false
     description: Reviewer to add to the pull request
-    default: ""
+    default: ''
 outputs: {}
 
 runs:
   using: composite
   steps:
-    - uses: actions/github-script@v5
-      with:
-        github-token: "${{ inputs.github-token }}"
-        script: |
-          const { owner, repo, } = context.repo
+  - uses: actions/github-script@v5
+    with:
+      github-token: ${{ inputs.github-token }}
+      script: |
+        const { owner, repo, } = context.repo
 
-          const { data: { default_branch } } = await github.rest.repos.get({
+        const { data: { default_branch } } = await github.rest.repos.get({
+          owner,
+          repo,
+        });
+
+        const { data: { number: pull_number } } = await github.rest.pulls.create({
+          owner,
+          repo,
+          title: '${{ inputs.title }}',
+          head: '${{ inputs.branch }}',
+          base: default_branch,
+        });
+
+        const reviewer = '${{ inputs.reviewer }}';
+        if (reviewer) {
+          await github.rest.pulls.requestReviewers({
             owner,
             repo,
+            pull_number,
           });
-
-          const { data: { number: pull_number } } = await github.rest.pulls.create({
-            owner,
-            repo,
-            title: '${{ inputs.title }}',
-            head: '${{ inputs.branch }}',
-            base: default_branch,
-          });
-
-          const reviewer = '${{ inputs.reviewer }}';
-          if (reviewer) {
-            await github.rest.pulls.requestReviewers({
-              owner,
-              repo,
-              pull_number,
-            });
-          }
+        }

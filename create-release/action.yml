@@ -1,5 +1,5 @@
-name: "Create release for tag"
-description: "Creates new release for existing tag"
+name: Create release for tag
+description: Creates new release for existing tag
 
 inputs:
   github-token:
@@ -13,13 +13,13 @@ outputs: {}
 runs:
   using: composite
   steps:
-    - uses: actions/github-script@v5
-      with:
-        github-token: "${{ inputs.github-token }}"
-        script: |
-          const repository = context.repo
-          await github.rest.repos.createRelease({
-            owner: repository.owner,
-            repo: repository.repo,
-            tag_name: '${{ inputs.tag-name }}',
-          });
+  - uses: actions/github-script@v5
+    with:
+      github-token: ${{ inputs.github-token }}
+      script: |
+        const repository = context.repo
+        await github.rest.repos.createRelease({
+          owner: repository.owner,
+          repo: repository.repo,
+          tag_name: '${{ inputs.tag-name }}',
+        });

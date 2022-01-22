@@ -1,5 +1,5 @@
-name: "Setup git user and push changes"
-description: "Setup git user and push changes"
+name: Setup git user and push changes
+description: Setup git user and push changes
 
 inputs:
   branch:
@@ -11,7 +11,7 @@ inputs:
   working-directory:
     required: false
     description: Repository to push changes from
-    default: "."
+    default: .
   user-name:
     required: false
     description: Git user name
@@ -22,25 +22,25 @@ inputs:
     default: 41898282+github-actions[bot]@users.noreply.github.com
 outputs:
   pushed-changes:
-    description: "`true` if changes were pushed, `false` otherwise"
-    value: "${{ steps.git-check-changes.outputs.updated }}"
+    description: '`true` if changes were pushed, `false` otherwise'
+    value: ${{ steps.git-check-changes.outputs.updated }}
 
 runs:
   using: composite
   steps:
-    - name: Check for changes
-      id: git-check-changes
-      run: |
-        UPDATED=$(if [[ -z "$(git -C '${{ inputs.working-directory }}' status --porcelain)" ]]; then echo "false"; else echo "true"; fi)
-        echo "::set-output name=updated::${UPDATED}"
-      shell: bash
+  - name: Check for changes
+    id: git-check-changes
+    run: |
+      UPDATED=$(if [[ -z "$(git -C '${{ inputs.working-directory }}' status --porcelain)" ]]; then echo "false"; else echo "true"; fi)
+      echo "::set-output name=updated::${UPDATED}"
+    shell: bash
 
-    - name: Commit & push changes
-      if: >
-        steps.git-check-changes.outputs.updated == 'true'
-      run: |
-        git -C '${{ inputs.working-directory }}' config user.name '${{ inputs.user-name }}'
-        git -C '${{ inputs.working-directory }}' config user.email '${{ inputs.user-email }}'
-        git -C '${{ inputs.working-directory }}' commit -am '${{ inputs.message }}'
-        git -C '${{ inputs.working-directory }}' push origin HEAD:'${{ inputs.branch }}'
-      shell: bash
+  - name: Commit & push changes
+    if: >
+      steps.git-check-changes.outputs.updated == 'true'
+    run: |
+      git -C '${{ inputs.working-directory }}' config user.name '${{ inputs.user-name }}'
+      git -C '${{ inputs.working-directory }}' config user.email '${{ inputs.user-email }}'
+      git -C '${{ inputs.working-directory }}' commit -am '${{ inputs.message }}'
+      git -C '${{ inputs.working-directory }}' push origin HEAD:'${{ inputs.branch }}'
+    shell: bash

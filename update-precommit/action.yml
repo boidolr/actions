@@ -1,43 +1,43 @@
-name: "Update pre-commit config"
-description: "Update pre-commit configuration and test it still works"
+name: Update pre-commit config
+description: Update pre-commit configuration and test it still works
 
 inputs:
   python-version:
     required: false
-    description: "Python version"
-    default: "3.10"
+    description: Python version
+    default: '3.10'
   working-directory:
     required: false
     description: Repository to run pre-commit in
-    default: "."
+    default: .
 outputs: {}
 
 runs:
   using: composite
   steps:
-    - name: Set up Python ${{ inputs.python-version }}
-      uses: actions/setup-python@v2.3.1
-      with:
-        python-version: "${{ inputs.python-version }}"
+  - name: Set up Python ${{ inputs.python-version }}
+    uses: actions/setup-python@v2.3.1
+    with:
+      python-version: ${{ inputs.python-version }}
 
-    - name: Get pip cache dir
-      id: pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-      shell: bash
+  - name: Get pip cache dir
+    id: pip-cache
+    run: echo "::set-output name=dir::$(pip cache dir)"
+    shell: bash
 
-    - uses: actions/cache@v2.1.7
-      with:
-        path: |
-          "${{ steps.pip-cache.outputs.dir }}"
-          ~/.cache/pre-commit
-        key: "${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}"
-        restore-keys: |
-          "${{ runner.os }}-pre-commit-${{ inputs.python-version }}"
+  - uses: actions/cache@v2.1.7
+    with:
+      path: |
+        "${{ steps.pip-cache.outputs.dir }}"
+        ~/.cache/pre-commit
+      key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      restore-keys: |
+        "${{ runner.os }}-pre-commit-${{ inputs.python-version }}"
 
-    - name: Update pre-commit
-      run: |
-        pip install -q pre-commit
-        pre-commit autoupdate
-        pre-commit run --all-files
-      shell: bash
-      working-directory: "${{ inputs.working-directory }}"
+  - name: Update pre-commit
+    run: |
+      pip install -q pre-commit
+      pre-commit autoupdate
+      pre-commit run --all-files
+    shell: bash
+    working-directory: ${{ inputs.working-directory }}

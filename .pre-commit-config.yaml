@@ -1,0 +1,19 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.1.0
+  hooks:
+  - id: check-merge-conflict
+  - id: check-yaml
+  - id: end-of-file-fixer
+  - id: mixed-line-ending
+    files: \.(ts|js|yaml)$
+    args: [--fix=lf]
+  - id: pretty-format-json
+    args: [--autofix, --indent=4, --no-sort-keys]
+  - id: trailing-whitespace
+
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.2.0
+  hooks:
+  - id: pretty-format-yaml
+    args: [--autofix, --indent, '2']
