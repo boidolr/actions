@@ -30,7 +30,7 @@ runs:
       path: |
         "${{ steps.pip-cache.outputs.dir }}"
         ~/.cache/pre-commit
-      key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('**/.pre-commit-config.yaml') }}
       restore-keys: |
         "${{ runner.os }}-pre-commit-${{ inputs.python-version }}"
 
