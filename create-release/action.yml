@@ -17,9 +17,9 @@ runs:
     with:
       github-token: ${{ inputs.github-token }}
       script: |
-        const repository = context.repo
+        const { repo } = context
         await github.rest.repos.createRelease({
-          owner: repository.owner,
-          repo: repository.repo,
+          owner: repo.owner,
+          repo: repo.repo,
           tag_name: '${{ inputs.tag-name }}',
         });
