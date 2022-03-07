@@ -6,6 +6,10 @@ inputs:
     required: false
     description: Python version
     default: '3.10'
+  working-directory:
+    required: false
+    description: Repository to push changes from
+    default: .
 outputs: {}
 
 runs:
@@ -16,7 +20,7 @@ runs:
     with:
       python-version: ${{ inputs.python-version }}
       cache: pip
-      cache-dependency-path: setup.cfg
+      cache-dependency-path: ${{ inputs.working-directory }}/setup.cfg
 
   - name: Upgrade pip
     run: python -m pip install -q --upgrade pip
