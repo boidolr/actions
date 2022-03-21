@@ -22,7 +22,7 @@ runs:
       cache: pip
       cache-dependency-path: .pre-commit-config.yaml
 
-  - uses: actions/cache@v2.1.7
+  - uses: actions/cache@v3.0.0
     with:
       path: ~/.cache/pre-commit
       key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('**/.pre-commit-config.yaml') }}
