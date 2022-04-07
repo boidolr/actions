@@ -28,7 +28,7 @@ outputs:
 runs:
   using: composite
   steps:
-  - uses: actions/github-script@v6.0.0
+  - uses: actions/github-script@v6
     id: git-push-changes
     with:
       script: |
