@@ -4,5 +4,6 @@
         ":disableDependencyDashboard",
         ":automergePr",
         ":automergeMinor"
-    ]
+    ],
+    "ignoreTests": true
 }
