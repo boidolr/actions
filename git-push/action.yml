@@ -19,7 +19,7 @@ inputs:
   user-email:
     required: false
     description: Git user email
-    default: 41898282+github-actions[bot]@users.noreply.github.com
+    default: github-actions@github.com
 outputs:
   pushed-changes:
     description: '`true` if changes were pushed, `false` otherwise'
