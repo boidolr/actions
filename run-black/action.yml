@@ -1,0 +1,22 @@
+name: Run black
+description: Setup python and run black
+
+inputs:
+  working-directory:
+    required: false
+    description: Repository to work on
+    default: .
+outputs: {}
+
+runs:
+  using: composite
+  steps:
+  - uses: boidolr/actions/python-pip-env@main
+    with:
+      working-directory: ${{ inputs.working-directory }}
+
+  - name: Run black
+    run: |
+      pip3 install -q black
+      black .
+    working-directory: ${{ inputs.working-directory }}
