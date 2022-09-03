@@ -1,5 +1,5 @@
-name: Run black
-description: Setup python and run black
+name: Run pip-audit
+description: Setup python and run pip-audit
 
 inputs:
   working-directory:
@@ -15,10 +15,12 @@ runs:
     uses: actions/setup-python@v4
     with:
       cache: pip
+      cache-dependency-path: ${{ inputs.working-directory }}/pyproject.toml
 
-  - name: Run black
+  - name: Check dependencies
     run: |
-      pip3 install -q black
-      black .
+      pip3 install -q pip-compile pip-audit
+      pip-compile --output-file=requirements.txt pyproject.toml
+      pip-audit -r requirements.txt
     shell: bash
     working-directory: ${{ inputs.working-directory }}
