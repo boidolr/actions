@@ -1,0 +1,29 @@
+name: Sync with upstream
+description: Fetch upstream, fast forward merge and push changes
+
+inputs:
+  branch:
+    required: false
+    description: Branch to sync - needs to match upstream branch
+    default: main
+  upstream:
+    required: false
+    description: Upstream to fetch from
+    default: origin
+  working-directory:
+    required: false
+    description: Repository to work on
+    default: .
+outputs: {}
+
+runs:
+  using: composite
+  steps:
+  - run: |
+      git remote add upstream ${{ inputs.upstream }}
+      git fetch upstream ${{ inputs.branch }}
+      git switch ${{ inputs.branch }}
+      git merge --ff-only upstream ${{ inputs.branch }}
+      git push origin ${{ inputs.branch }}
+    shell: bash
+    working-directory: ${{ inputs.working-directory }}
