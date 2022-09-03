@@ -1,5 +1,5 @@
-name: Setup python with pip cache
-description: Setup python pip cache with cache key
+name: Setup python with poetry cache
+description: Setup python and poetry with venv caching
 
 inputs:
   python-version:
@@ -15,15 +15,11 @@ outputs: {}
 runs:
   using: composite
   steps:
+  - name: Install poetry
+    run: pipx install poetry
   - name: Set up Python ${{ inputs.python-version }}
     uses: actions/setup-python@v4
     with:
       python-version: ${{ inputs.python-version }}
-      cache: pip
-      cache-dependency-path: |
-        ${{ inputs.working-directory }}/setup.cfg
-        ${{ inputs.working-directory }}/pyproject.toml
-
-  - name: Upgrade pip
-    run: python -m pip install -q --upgrade pip
-    shell: bash
+      cache: poetry
+      cache-dependency-path: ${{ inputs.working-directory }}/pyproject.toml
