@@ -1,0 +1,38 @@
+name: Create issue
+description: Creates issue with given content
+
+inputs:
+  github-token:
+    required: true
+    description: Github token
+  title:
+    required: true
+    description: Issue title
+  body:
+    required: true
+    description: Issue body
+  label:
+    required: false
+    description: Issue label
+    default: ''
+outputs: {}
+
+runs:
+  using: composite
+  steps:
+  - uses: actions/github-script@v6
+    with:
+      github-token: ${{ inputs.github-token }}
+      script: |
+        const { owner, repo, } = context.repo
+        const label = '${{ inputs.label }}'
+        const labels = label ? [label] : []
+
+        await github.rest.issues.create({
+          owner,
+          repo,
+          title: '${{ inputs.title }}',
+          body: '${{ inputs.body }}',
+          labels,
+          assignees: [],
+        });
