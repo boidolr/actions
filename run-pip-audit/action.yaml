@@ -19,7 +19,7 @@ runs:
 
   - name: Check dependencies
     run: |
-      pip3 install -q pip-compile pip-audit
+      pip install -q pip-compile pip-audit
       pip-compile --output-file=requirements.txt pyproject.toml
       pip-audit -r requirements.txt
     shell: bash
