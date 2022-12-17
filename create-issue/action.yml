@@ -15,12 +15,19 @@ inputs:
     required: false
     description: Issue label
     default: ''
-outputs: {}
+outputs:
+  issue-url:
+    description: URL of the created issue
+    value: ${{ steps.script.outputs.url }}
+  issue-id:
+    description: ID of the created issue
+    value: ${{ steps.script.outputs.number }}
 
 runs:
   using: composite
   steps:
-  - uses: actions/github-script@v6
+  - id: script
+    uses: actions/github-script@v6
     with:
       github-token: ${{ inputs.github-token }}
       script: |
@@ -28,7 +35,7 @@ runs:
         const label = '${{ inputs.label }}'
         const labels = label ? [label] : []
 
-        await github.rest.issues.create({
+        const { url, number } = await github.rest.issues.create({
           owner,
           repo,
           title: '${{ inputs.title }}',
@@ -36,3 +43,7 @@ runs:
           labels,
           assignees: [],
         });
+
+        core.setOutput('url', url);
+        core.setOutput('number', number);
+        core.info('Created issue: ' + url)
