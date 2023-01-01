@@ -6,6 +6,10 @@ inputs:
     required: false
     description: Python version
     default: '3.11'
+  autoupdate:
+    required: false
+    description: Run autoupdate for configured pre-commit hooks
+    default: false
   working-directory:
     required: false
     description: Repository to run pre-commit in
@@ -28,9 +32,18 @@ runs:
       path: ~/.cache/pre-commit
       key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('**/.pre-commit-config.yaml') }}
 
+  - name: Install pre-commit
+    run: pip install -q pre-commit
+    shell: bash
+    working-directory: ${{ inputs.working-directory }}
+
+  - name: Run pre-commit autoupdate
+    if: ${{ inputs.autoupdate }}
+    run: pre-commit autoupdate
+    shell: bash
+    working-directory: ${{ inputs.working-directory }}
+
   - name: Run pre-commit
-    run: |
-      pip install -q pre-commit
-      pre-commit run --all-files
+    run: pre-commit run --all-files
     shell: bash
     working-directory: ${{ inputs.working-directory }}
