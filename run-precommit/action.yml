@@ -38,7 +38,7 @@ runs:
     working-directory: ${{ inputs.working-directory }}
 
   - name: Run pre-commit autoupdate
-    if: ${{ inputs.autoupdate }}
+    if: ${{ inputs.autoupdate == 'true' }}
     run: pre-commit autoupdate
     shell: bash
     working-directory: ${{ inputs.working-directory }}
