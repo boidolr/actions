@@ -5,7 +5,7 @@ inputs:
   python-version:
     required: false
     description: Python version
-    default: '3.11'
+    default: 3.x
   working-directory:
     required: false
     description: Repository to build from
