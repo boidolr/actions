@@ -14,7 +14,10 @@ inputs:
     required: false
     description: Repository to run pre-commit in
     default: .
-outputs: {}
+outputs:
+  update_log:
+    description: Log lines with updated pre-commit repositories, if any
+    value: ${{ steps.autoupdate.outputs.UPDATES }}
 
 runs:
   using: composite
@@ -37,12 +40,19 @@ runs:
     shell: bash
 
   - name: Run pre-commit autoupdate
+    id: autoupdate
     if: ${{ inputs.autoupdate == 'true' }}
-    run: pre-commit autoupdate
+    run: |
+      logs=$(pre-commit autoupdate | grep updating || echo '')
+      if [ -n "$logs" ]; then
+        echo "UPDATES<<EOF" >> $GITHUB_OUTPUT
+        echo "${logs}" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+      fi
     shell: bash
     working-directory: ${{ inputs.working-directory }}
 
   - name: Run pre-commit
-    run: pre-commit run --all-files
+    run: pre-commit run --show-diff-on-failure --all-files
     shell: bash
     working-directory: ${{ inputs.working-directory }}
