@@ -1,9 +1,10 @@
 {
     "extends": [
-        "config:base",
+        "config:best-practices",
         ":disableDependencyDashboard",
         ":automergePr",
-        ":automergeMinor"
+        ":automergeMinor",
+        ":semanticCommitTypeAll(chore)"
     ],
     "ignoreTests": true
 }
