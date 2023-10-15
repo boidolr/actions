@@ -20,30 +20,13 @@ outputs: {}
 runs:
   using: composite
   steps:
-  - uses: actions/github-script@v6
-    with:
-      github-token: ${{ inputs.github-token }}
-      script: |
-        const { owner, repo, } = context.repo
-
-        const { data: { default_branch } } = await github.rest.repos.get({
-          owner,
-          repo,
-        });
-
-        const { data: { number: pull_number } } = await github.rest.pulls.create({
-          owner,
-          repo,
-          title: '${{ inputs.title }}',
-          head: '${{ inputs.branch }}',
-          base: default_branch,
-        });
-
-        const reviewer = '${{ inputs.reviewer }}';
-        if (reviewer) {
-          await github.rest.pulls.requestReviewers({
-            owner,
-            repo,
-            pull_number,
-          });
-        }
+  - name: Create pull request
+    run: |
+      if [ -n "${{ inputs.reviewer }}" ]; then
+        gh pr create --title "${{ inputs.title }}" --head "${{ inputs.branch }}"
+      else
+        gh pr create --title "${{ inputs.title }}" --head "${{ inputs.branch }}" --reviewer "${{ inputs.reviewer }}"
+      fi
+    shell: bash
+    env:
+      GITHUB_TOKEN: ${{ inputs.github-token }}

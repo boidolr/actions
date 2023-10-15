@@ -13,13 +13,9 @@ outputs: {}
 runs:
   using: composite
   steps:
-  - uses: actions/github-script@v6
-    with:
-      github-token: ${{ inputs.github-token }}
-      script: |
-        const { owner, repo, } = context.repo
-        await github.rest.repos.createRelease({
-          owner,
-          repo,
-          tag_name: '${{ inputs.tag-name }}',
-        });
+  - name: Create release
+    run: |
+      gh release create '${{ inputs.tag-name }}'
+    shell: bash
+    env:
+      GITHUB_TOKEN: ${{ inputs.github-token }}

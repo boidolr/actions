@@ -2,14 +2,16 @@ name: Sync with upstream
 description: Fetch upstream, fast forward merge and push changes
 
 inputs:
+  github-token:
+    required: true
+    description: Github token
   branch:
     required: false
     description: Branch to sync - needs to match upstream branch
     default: main
-  upstream:
+  repo:
     required: false
-    description: Upstream to fetch from
-    default: origin
+    description: Repo to sync ('owner/repo')
   working-directory:
     required: false
     description: Repository to work on
@@ -20,10 +22,8 @@ runs:
   using: composite
   steps:
   - run: |
-      git remote add upstream ${{ inputs.upstream }}
-      git fetch upstream ${{ inputs.branch }}
-      git switch ${{ inputs.branch }}
-      git merge --ff-only upstream ${{ inputs.branch }}
-      git push origin ${{ inputs.branch }}
+      gh repo sync --branch '${{ inputs.branch }}' '${{ inputs.repo }}'
     shell: bash
     working-directory: ${{ inputs.working-directory }}
+    env:
+      GITHUB_TOKEN: ${{ inputs.github-token }}
