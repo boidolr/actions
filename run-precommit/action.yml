@@ -23,14 +23,14 @@ runs:
   using: composite
   steps:
   - name: Set up Python ${{ inputs.python-version }}
-    uses: actions/setup-python@v4
+    uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1 # v4
     with:
       python-version: ${{ inputs.python-version }}
       cache: pip
       cache-dependency-path: ${{ inputs.working-directory }}/.pre-commit-config.yaml
 
   - name: Cache pre-commit
-    uses: actions/cache@v3
+    uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3
     with:
       path: ~/.cache/pre-commit
       key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('**/.pre-commit-config.yaml') }}
