@@ -15,7 +15,7 @@ runs:
   steps:
   - name: Create release
     run: |
-      gh release create '${{ inputs.tag-name }}'
+      gh release create --verify-tag --generate-notes '${{ inputs.tag-name }}'
     shell: bash
     env:
       GITHUB_TOKEN: ${{ inputs.github-token }}
