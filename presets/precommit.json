@@ -1,0 +1,19 @@
+{
+    "extends": [
+        ":enablePreCommit"
+    ],
+    "packageRules": [
+        {
+            "matchPackagePatterns": [
+                "^pre-commit/",
+                "^boidolr/",
+                "^astral-sh/"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "automerge": true
+        }
+    ]
+}

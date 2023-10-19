@@ -1,0 +1,10 @@
+{
+    "packageRules": [
+        {
+            "matchDatasources": [
+                "github-tags"
+            ],
+            "automerge": true
+        }
+    ]
+}
