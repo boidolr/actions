@@ -4,6 +4,10 @@
             "matchDatasources": [
                 "github-tags"
             ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
             "automerge": true
         }
     ]
