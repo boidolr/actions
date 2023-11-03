@@ -4,6 +4,12 @@
         ":disableDependencyDashboard",
         ":automergePr",
         ":automergeMinor",
-        ":semanticCommitTypeAll(chore)"
+        ":semanticCommitTypeAll(chore)",
+        ":label(dependencies)"
+    ],
+    "addLabels": [
+        "{{category}}",
+        "{{datasource}}",
+        "{{manager}}"
     ]
 }

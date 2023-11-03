@@ -1,8 +1,8 @@
 {
     "packageRules": [
         {
-            "matchDatasources": [
-                "github-tags"
+            "matchManagers": [
+                "github-actions"
             ],
             "matchUpdateTypes": [
                 "minor",
