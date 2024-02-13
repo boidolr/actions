@@ -11,5 +11,8 @@
         "{{category}}",
         "{{datasource}}",
         "{{manager}}"
-    ]
+    ],
+    "lockFileMaintenance": {
+        "enabled": true
+    }
 }
