@@ -6,7 +6,9 @@
             ],
             "matchUpdateTypes": [
                 "minor",
-                "patch"
+                "patch",
+                "pinDigest",
+                "digest"
             ],
             "automerge": true
         }
