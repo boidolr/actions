@@ -1,4 +1,5 @@
 {
+    "description": "Default renovatebot configuration with PR labeling for further PR selection",
     "extends": [
         "config:best-practices",
         ":disableDependencyDashboard",

@@ -1,4 +1,5 @@
 {
+    "description": "Enable updates for pre-commit hooks & automerge select updates",
     "extends": [
         ":enablePreCommit"
     ],

@@ -1,4 +1,5 @@
 {
+    "description": "Enable automerge for GitHub Actions",
     "packageRules": [
         {
             "matchManagers": [
