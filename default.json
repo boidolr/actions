@@ -2,6 +2,7 @@
     "description": "Default renovatebot configuration with PR labeling for further PR selection",
     "extends": [
         "config:best-practices",
+        "schedule:weekly",
         ":disableDependencyDashboard",
         ":automergePr",
         ":automergeMinor",
