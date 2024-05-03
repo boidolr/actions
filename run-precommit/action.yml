@@ -9,7 +9,7 @@ inputs:
   autoupdate:
     required: false
     description: Run autoupdate for configured pre-commit hooks
-    default: false
+    default: 'false'
   working-directory:
     required: false
     description: Repository to run pre-commit in
@@ -23,14 +23,14 @@ runs:
   using: composite
   steps:
   - name: Set up Python ${{ inputs.python-version }}
-    uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5
+    uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d   # v5
     with:
       python-version: ${{ inputs.python-version }}
       cache: pip
       cache-dependency-path: ${{ inputs.working-directory }}/.pre-commit-config.yaml
 
   - name: Cache pre-commit
-    uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+    uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9   # v4
     with:
       path: ~/.cache/pre-commit
       key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('**/.pre-commit-config.yaml') }}

@@ -22,25 +22,31 @@ inputs:
     default: 41898282+github-actions[bot]@users.noreply.github.com
 outputs:
   pushed-changes:
-    description: '`true` if changes were pushed, `false` otherwise'
+    description: "`true` if changes were pushed, `false` otherwise"
     value: ${{ steps.git-push-changes.outputs.updated }}
 
 runs:
   using: composite
   steps:
-  - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-    id: git-push-changes
-    with:
-      script: |
-        const CWD = '${{ inputs.working-directory }}';
-        const diff = await exec.exec(
-            'git', ['-C', CWD, 'diff', '--quiet'], { ignoreReturnCode: true, }
-        );
-        core.setOutput('updated', `${!!diff}`);
+    - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+      id: git-push-changes
+      env:
+        CWD: ${{ inputs.working-directory }}
+        MESSAGE: ${{ inputs.message }}
+        BRANCH: ${{ inputs.branch }}
+        NAME: ${{ inputs.user-name }}
+        EMAIL: ${{ inputs.user-email }}
+      with:
+        script: |
+          const { CWD, MESSAGE, BRANCH, NAME, EMAIL } = process.env;
+          const diff = await exec.exec(
+              'git', ['-C', CWD, 'diff', '--quiet'], { ignoreReturnCode: true, }
+          );
+          core.setOutput('updated', `${!!diff}`);
 
-        if (diff) {
-          await exec.exec('git', ['-C', CWD, 'config', 'user.name', '${{ inputs.user-name }}']);
-          await exec.exec('git', ['-C', CWD, 'config', 'user.email', '${{ inputs.user-email }}']);
-          await exec.exec('git', ['-C', CWD, 'commit', '-am', `${{ inputs.message }}`]);
-          await exec.exec('git', ['-C', CWD, 'push', 'origin', 'HEAD:${{ inputs.branch }}']);
-        }
+          if (diff) {
+              await exec.exec('git', ['-C', CWD, 'config', 'user.name', NAME]);
+              await exec.exec('git', ['-C', CWD, 'config', 'user.email', EMAIL]);
+              await exec.exec('git', ['-C', CWD, 'commit', '-am', MESSAGE]);
+              await exec.exec('git', ['-C', CWD, 'push', 'origin', `HEAD:${BRANCH}`]);
+          }

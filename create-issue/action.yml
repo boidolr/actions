@@ -27,19 +27,23 @@ runs:
   using: composite
   steps:
   - id: script
-    uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+    uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea   # v7
+    env:
+      LABEL: ${{ inputs.label }}
+      TITEL: ${{ inputs.title }}
+      BODY: ${{ inputs.body }}
     with:
       github-token: ${{ inputs.github-token }}
       script: |
         const { owner, repo, } = context.repo
-        const label = '${{ inputs.label }}'
-        const labels = label ? [label] : []
+        const { LABEL, TITEL, BODY } = process.env
+        const labels = LABEL ? [LABEL] : []
 
         const { url, number } = await github.rest.issues.create({
           owner,
           repo,
-          title: '${{ inputs.title }}',
-          body: '${{ inputs.body }}',
+          title: TITEL,
+          body: BODY,
           labels,
           assignees: [],
         });
