@@ -1,0 +1,46 @@
+# https://github.com/dependabot/fetch-metadata#enabling-auto-merge
+name: Dependabot merge
+on:
+  workflow_call:
+    inputs:
+      automerge:
+        required: true
+        default: true
+        type: boolean
+      semver:
+        required: true
+        default: patch
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+    secrets:
+      token:
+        required: true
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
+    steps:
+    - name: Dependabot metadata
+      id: dependabot-metadata
+      uses: dependabot/fetch-metadata@v2.1.0
+
+    - name: Enable auto-merge for Dependabot PRs
+      if: ${{ steps.dependabot-metadata.outputs.update-type == "version-update:semver-${inputs.semver}" }}
+      run: |
+        if [[ "$AUTOMERGE" == "true" ]]; then
+          gh pr merge --auto --rebase "$PR_URL"
+        else
+          gh pr merge --rebase "$PR_URL"
+        fi
+      env:
+        PR_URL: ${{ github.event.pull_request.html_url }}
+        GITHUB_TOKEN: ${{ secrets.token }}
+        AUTOMERGE: ${{ inputs.automerge }}
