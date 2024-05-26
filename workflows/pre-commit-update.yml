@@ -1,0 +1,35 @@
+name: pre-commit update
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        default: main
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  pre-commit-update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: boidolr/actions/run-precommit@main
+      id: precommit
+      with:
+        autoupdate: true
+
+    - name: Push pre-commit changes
+      uses: boidolr/actions/git-push@main
+      if: ${{ steps.precommit.outputs.update_log }}
+      with:
+        message: |
+          chore: update pre-commit config
+
+
+          ${{ steps.precommit.outputs.update_log }}
+        branch: ${{ inputs.branch }}
