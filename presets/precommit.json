@@ -15,6 +15,14 @@
                 "patch"
             ],
             "automerge": true
+        },
+        {
+            "matchManagers": [
+                "pre-commit"
+            ],
+            "extends": [
+                "schedule:monthly"
+            ]
         }
     ]
 }
