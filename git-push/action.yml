@@ -15,11 +15,11 @@ inputs:
   user-name:
     required: false
     description: Git user name
-    default: github-actions
+    default: ""
   user-email:
     required: false
     description: Git user email
-    default: 41898282+github-actions[bot]@users.noreply.github.com
+    default: ""
 outputs:
   pushed-changes:
     description: "`true` if changes were pushed, `false` otherwise"
@@ -34,8 +34,8 @@ runs:
         CWD: ${{ inputs.working-directory }}
         MESSAGE: ${{ inputs.message }}
         BRANCH: ${{ inputs.branch }}
-        NAME: ${{ inputs.user-name }}
-        EMAIL: ${{ inputs.user-email }}
+        NAME: ${{ inputs.user-name || github.actor }}
+        EMAIL: ${{ inputs.user-email || format('{0}@users.noreply.github.com', github.actor) }}
       with:
         script: |
           const { CWD, MESSAGE, BRANCH, NAME, EMAIL } = process.env;
