@@ -10,11 +10,8 @@ on:
       semver:
         required: true
         default: patch
-        type: choice
-        options:
-        - patch
-        - minor
-        - major
+        description: patch, minor or major
+        type: string
     secrets:
       token:
         required: true
@@ -33,7 +30,7 @@ jobs:
       uses: dependabot/fetch-metadata@dbb049abf0d677abbd7f7eee0375145b417fdd34 # v2.2.0
 
     - name: Enable auto-merge for Dependabot PRs
-      if: ${{ steps.dependabot-metadata.outputs.update-type == "version-update:semver-${inputs.semver}" }}
+      if: ${{ steps.dependabot-metadata.outputs.update-type == format('version-update:semver-{0}', inputs.semver) }}
       run: |
         if [[ "$AUTOMERGE" == "true" ]]; then
           gh pr merge --auto --rebase "$PR_URL"
