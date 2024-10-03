@@ -4,14 +4,12 @@ on:
   workflow_call:
     inputs:
       automerge:
-        required: true
         default: true
         type: boolean
-      semver:
-        required: true
-        default: patch
-        description: patch, minor or major
-        type: string
+      minor:
+        default: true
+        description: whether to merge minor and patch or only patch versions
+        type: boolean
     secrets:
       token:
         required: true
@@ -30,7 +28,9 @@ jobs:
       uses: dependabot/fetch-metadata@dbb049abf0d677abbd7f7eee0375145b417fdd34 # v2.2.0
 
     - name: Enable auto-merge for Dependabot PRs
-      if: ${{ steps.dependabot-metadata.outputs.update-type == format('version-update:semver-{0}', inputs.semver) }}
+      if: |
+        (inputs.minor && steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor')
+        || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch'
       run: |
         if [[ "$AUTOMERGE" == "true" ]]; then
           gh pr merge --auto --rebase "$PR_URL"
