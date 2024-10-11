@@ -2,10 +2,6 @@ name: Run pre-commit
 description: Run pre-commit with configuration and test it still works
 
 inputs:
-  python-version:
-    required: false
-    description: Python version
-    default: 3.x
   autoupdate:
     required: false
     description: Run autoupdate for configured pre-commit hooks
@@ -22,28 +18,24 @@ outputs:
 runs:
   using: composite
   steps:
-  - name: Set up Python ${{ inputs.python-version }}
-    uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
+  - name: Install uv
+    uses: astral-sh/setup-uv@c9aa747934b6867b18bf8f6624a8929c4f76147b # v3
     with:
-      python-version: ${{ inputs.python-version }}
-      cache: pip
-      cache-dependency-path: ${{ inputs.working-directory }}/.pre-commit-config.yaml
+      enable-cache: true
+      cache-suffix: precommit
+      cache-dependency-glob: ${{ inputs.working-directory }}/.pre-commit-config.yaml
 
   - name: Cache pre-commit
     uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9   # v4
     with:
       path: ~/.cache/pre-commit
-      key: ${{ runner.os }}-pre-commit-${{ inputs.python-version }}-${{ hashFiles('**/.pre-commit-config.yaml') }}
-
-  - name: Install pre-commit
-    run: pip install -q pre-commit
-    shell: bash
+      key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
 
   - name: Run pre-commit autoupdate
     id: autoupdate
     if: ${{ inputs.autoupdate == 'true' }}
     run: |
-      logs=$(pre-commit autoupdate | grep updating || echo '')
+      logs=$(uvx pre-commit autoupdate | grep updating || echo '')
       if [ -n "$logs" ]; then
         echo "UPDATES<<EOF" >> $GITHUB_OUTPUT
         echo "${logs}" >> $GITHUB_OUTPUT
@@ -51,8 +43,12 @@ runs:
       fi
     shell: bash
     working-directory: ${{ inputs.working-directory }}
+    env:
+      UV_PYTHON_PREFERENCE: only-managed
 
   - name: Run pre-commit
-    run: pre-commit run --show-diff-on-failure --all-files
+    run: uvx pre-commit run --show-diff-on-failure --all-files
     shell: bash
     working-directory: ${{ inputs.working-directory }}
+    env:
+      UV_PYTHON_PREFERENCE: only-managed
