@@ -1,5 +1,8 @@
 {
     "description": "Enable automerge for GitHub Actions",
+    "extends": [
+        "customManagers:githubActionsVersions"
+    ],
     "packageRules": [
         {
             "matchManagers": [
