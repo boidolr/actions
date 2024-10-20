@@ -11,14 +11,13 @@ outputs: {}
 runs:
   using: composite
   steps:
-  - name: Set up Python
-    uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
+  - name: Install uv
+    uses: astral-sh/setup-uv@c9aa747934b6867b18bf8f6624a8929c4f76147b       # v3
     with:
-      cache: pip
+      enable-cache: true
+      cache-suffix: black
 
   - name: Run black
-    run: |
-      pip install -q black
-      black .
+    run: uvx black .
     shell: bash
     working-directory: ${{ inputs.working-directory }}

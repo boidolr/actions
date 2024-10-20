@@ -11,16 +11,16 @@ outputs: {}
 runs:
   using: composite
   steps:
-  - name: Set up Python
-    uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
+  - name: Install uv
+    uses: astral-sh/setup-uv@c9aa747934b6867b18bf8f6624a8929c4f76147b       # v3
     with:
-      cache: pip
-      cache-dependency-path: ${{ inputs.working-directory }}/pyproject.toml
+      enable-cache: true
+      cache-suffix: audit
+      cache-dependency-glob: ${{ inputs.working-directory }}/pyproject.toml
 
   - name: Check dependencies
     run: |
-      pip install -q pip-compile pip-audit
-      pip-compile --output-file=requirements.txt pyproject.toml
-      pip-audit -r requirements.txt
+      uvx pip-compile --output-file=requirements.txt pyproject.toml
+      uvx pip-audit -r requirements.txt
     shell: bash
     working-directory: ${{ inputs.working-directory }}
