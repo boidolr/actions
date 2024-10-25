@@ -15,38 +15,38 @@ inputs:
   user-name:
     required: false
     description: Git user name
-    default: ""
+    default: ''
   user-email:
     required: false
     description: Git user email
-    default: ""
+    default: ''
 outputs:
   pushed-changes:
-    description: "`true` if changes were pushed, `false` otherwise"
+    description: '`true` if changes were pushed, `false` otherwise'
     value: ${{ steps.git-push-changes.outputs.updated }}
 
 runs:
   using: composite
   steps:
-    - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-      id: git-push-changes
-      env:
-        CWD: ${{ inputs.working-directory }}
-        MESSAGE: ${{ inputs.message }}
-        BRANCH: ${{ inputs.branch }}
-        NAME: ${{ inputs.user-name || github.actor }}
-        EMAIL: ${{ inputs.user-email || format('{0}@users.noreply.github.com', github.actor) }}
-      with:
-        script: |
-          const { CWD, MESSAGE, BRANCH, NAME, EMAIL } = process.env;
-          const diff = await exec.exec(
-              'git', ['-C', CWD, 'diff', '--quiet'], { ignoreReturnCode: true, }
-          );
-          core.setOutput('updated', `${!!diff}`);
+  - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea   # v7
+    id: git-push-changes
+    env:
+      CWD: ${{ inputs.working-directory }}
+      MESSAGE: ${{ inputs.message }}
+      BRANCH: ${{ inputs.branch }}
+      NAME: ${{ inputs.user-name || github.actor }}
+      EMAIL: ${{ inputs.user-email || format('{0}@users.noreply.github.com', github.actor) }}
+    with:
+      script: |
+        const { CWD, MESSAGE, BRANCH, NAME, EMAIL } = process.env;
+        const diff = await exec.exec(
+            'git', ['-C', CWD, 'diff', '--quiet'], { ignoreReturnCode: true, }
+        );
+        core.setOutput('updated', `${!!diff}`);
 
-          if (diff) {
-              await exec.exec('git', ['-C', CWD, 'config', 'user.name', NAME]);
-              await exec.exec('git', ['-C', CWD, 'config', 'user.email', EMAIL]);
-              await exec.exec('git', ['-C', CWD, 'commit', '-am', MESSAGE]);
-              await exec.exec('git', ['-C', CWD, 'push', 'origin', `HEAD:${BRANCH}`]);
-          }
+        if (diff) {
+            await exec.exec('git', ['-C', CWD, 'config', 'user.name', NAME]);
+            await exec.exec('git', ['-C', CWD, 'config', 'user.email', EMAIL]);
+            await exec.exec('git', ['-C', CWD, 'commit', '-am', MESSAGE]);
+            await exec.exec('git', ['-C', CWD, 'push', 'origin', `HEAD:${BRANCH}`]);
+        }

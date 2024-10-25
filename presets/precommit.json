@@ -5,10 +5,10 @@
     ],
     "packageRules": [
         {
-            "matchPackagePatterns": [
-                "^pre-commit/",
-                "^boidolr/",
-                "^astral-sh/"
+            "matchPackageNames": [
+                "pre-commit/*",
+                "boidolr/*",
+                "astral-sh/*"
             ],
             "matchUpdateTypes": [
                 "minor",
