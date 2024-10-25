@@ -1,0 +1,36 @@
+name: Renovate check
+on:
+  pull_request:
+    paths:
+    - presets/**
+    - default.json
+    - renovate.json
+
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+        cache-dependency-path: |
+          presets/**
+          default.json
+          renovate.json
+
+    - name: Check renovate config
+      run: npx --yes --package renovate -- renovate-config-validator --strict default.json renovate.json presets/**
+
+    - name: Renovate dry-run
+      run: npx --yes --package renovate -- renovate --dry-run --autodiscover
+      env:
+        RENOVATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RENOVATE_USE_BASE_BRANCH_CONFIG: ${{ github.ref }}
