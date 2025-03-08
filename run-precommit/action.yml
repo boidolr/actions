@@ -21,9 +21,13 @@ runs:
   - name: Install uv
     uses: astral-sh/setup-uv@1edb52594c857e2b5b13128931090f0640537287 # v5
     with:
+      version: ${{ env.UV_VERSION }}
       enable-cache: true
       cache-suffix: precommit
       cache-dependency-glob: ${{ inputs.working-directory }}/.pre-commit-config.yaml
+    env:
+      # renovate: datasource=github-releases depName=astral-sh/uv
+      UV_VERSION: 0.6.1
 
   - name: Cache pre-commit
     uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4
