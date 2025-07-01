@@ -20,7 +20,7 @@ runs:
       cache-dependency-glob: ${{ inputs.working-directory }}/pyproject.toml
     env:
       # renovate: datasource=github-releases depName=astral-sh/uv
-      UV_VERSION: 0.7.9
+      UV_VERSION: 0.7.17
 
   - name: Check dependencies
     run: |
