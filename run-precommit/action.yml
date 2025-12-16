@@ -1,5 +1,5 @@
 name: Run pre-commit
-description: Run pre-commit with configuration and test it still works
+description: Run prek with pre-commit configuration and test it still works
 
 inputs:
   autoupdate:
@@ -29,17 +29,17 @@ runs:
       # renovate: datasource=github-releases depName=astral-sh/uv
       UV_VERSION: 0.9.13
 
-  - name: Cache pre-commit
+  - name: Cache prek
     uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
     with:
-      path: ~/.cache/pre-commit
+      path: ~/.cache/prek
       key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
 
-  - name: Run pre-commit autoupdate
+  - name: Run prek autoupdate
     id: autoupdate
     if: ${{ inputs.autoupdate == 'true' }}
     run: |
-      logs=$(uvx --with pre-commit-uv pre-commit autoupdate | grep updating || echo '')
+      logs=$(uvx prek autoupdate | grep updating || echo '')
       if [ -n "$logs" ]; then
         echo "UPDATES<<EOF" >> $GITHUB_OUTPUT
         echo "${logs}" >> $GITHUB_OUTPUT
@@ -50,8 +50,8 @@ runs:
     env:
       UV_PYTHON_PREFERENCE: only-managed
 
-  - name: Run pre-commit
-    run: uvx --with pre-commit-uv pre-commit run --show-diff-on-failure --all-files
+  - name: Run prek
+    run: uvx prek run --show-diff-on-failure --all-files
     shell: bash
     working-directory: ${{ inputs.working-directory }}
     env:
