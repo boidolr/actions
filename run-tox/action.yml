@@ -1,0 +1,44 @@
+name: Run tox
+description: Run tox tests with given python version
+
+inputs:
+  python-version:
+    required: false
+    description: Python version to run tests with
+    default: '314'
+  working-directory:
+    required: false
+    description: Repository to run tox in
+    default: .
+outputs: {}
+
+runs:
+  using: composite
+  steps:
+  - uses: astral-sh/setup-uv@v6
+    env:
+      # renovate: datasource=github-releases depName=astral-sh/uv
+      UV_VERSION: 0.10.0
+    with:
+      enable-cache: true
+      cache-suffix: py-tox-${{ inputs.python-version }}
+      version: ${{ env.UV_VERSION }}
+
+  - name: Install Python ${{ env.PYTHON_VERSION }}
+    run: uv python install "${PYTHON_VERSION}"
+    shell: bash
+    env:
+      UV_PYTHON_PREFERENCE: only-managed
+      PYTHON_VERSION: ${{ inputs.python-version }}
+
+  - name: Install tox
+    run: uv tool install tox --with tox-uv
+    shell: bash
+
+  - name: Execute tests
+    run: tox -e "py${PYTHON_VERSION}"
+    shell: bash
+    working-directory: ${{ inputs.working-directory }}
+    env:
+      UV_PYTHON_PREFERENCE: only-managed
+      PYTHON_VERSION: ${{ inputs.python-version }}
