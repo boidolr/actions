@@ -15,7 +15,7 @@ outputs: {}
 runs:
   using: composite
   steps:
-  - uses: astral-sh/setup-uv@v6
+  - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
     env:
       # renovate: datasource=github-releases depName=astral-sh/uv
       UV_VERSION: 0.10.0
