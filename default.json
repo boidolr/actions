@@ -15,6 +15,7 @@
         "{{datasource}}",
         "{{manager}}"
     ],
+    "minimumReleaseAge": "7 days",
     "lockFileMaintenance": {
         "enabled": true,
         "schedule": "* 0-3 3 * *"
