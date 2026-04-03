@@ -16,6 +16,14 @@
         "{{manager}}"
     ],
     "minimumReleaseAge": "7 days",
+    "packageRules": [
+        {
+            "matchSourceUrls": [
+                "https://github.com/boidolr/actions"
+            ],
+            "minimumReleaseAge": "0 days"
+        }
+    ],
     "lockFileMaintenance": {
         "enabled": true,
         "schedule": "* 0-3 3 * *"
