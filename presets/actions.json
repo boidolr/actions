@@ -12,6 +12,15 @@
                 "digest"
             ],
             "automerge": true
+        },
+        {
+            "matchManagers": [
+                "github-actions"
+            ],
+            "matchPackageNames": [
+                "boidolr/actions"
+            ],
+            "minimumReleaseAge": "0 days"
         }
     ]
 }
