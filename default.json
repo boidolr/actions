@@ -18,8 +18,11 @@
     "minimumReleaseAge": "7 days",
     "packageRules": [
         {
-            "matchSourceUrls": [
-                "https://github.com/boidolr/actions"
+            "matchManagers": [
+                "github-actions"
+            ],
+            "matchPackageNames": [
+                "boidolr/actions"
             ],
             "minimumReleaseAge": "0 days"
         }
