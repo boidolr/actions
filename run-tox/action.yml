@@ -32,7 +32,7 @@ runs:
       PYTHON_VERSION: ${{ inputs.python-version }}
 
   - name: Install tox
-    run: uv tool install tox --with tox-uv
+    run: uv tool install tox --with tox-uv-bare
     shell: bash
 
   - name: Execute tests
