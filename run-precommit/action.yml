@@ -27,7 +27,7 @@ runs:
       cache-dependency-glob: ${{ inputs.working-directory }}/.pre-commit-config.yaml
     env:
       # renovate: datasource=github-releases depName=astral-sh/uv
-      UV_VERSION: 0.10.7
+      UV_VERSION: 0.11.26
 
   - name: Cache prek
     uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
