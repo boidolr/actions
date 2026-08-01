@@ -23,6 +23,12 @@
             "extends": [
                 "schedule:monthly"
             ]
+        },
+        {
+            "matchManagers": [
+                "pre-commit"
+            ],
+            "groupName": "pre-commit"
         }
     ]
 }

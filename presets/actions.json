@@ -21,6 +21,12 @@
                 "boidolr/actions"
             ],
             "minimumReleaseAge": "0 days"
+        },
+        {
+            "matchManagers": [
+                "github-actions"
+            ],
+            "groupName": "actions"
         }
     ]
 }
