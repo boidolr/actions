@@ -18,13 +18,13 @@ jobs:
     steps:
     - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803         # v6
 
-    - uses: boidolr/actions/run-precommit@d87fde10d5386f84f4ac1cd9b6becb61b7b892fe # main
+    - uses: boidolr/actions/run-precommit@47f62c14dbb70a62193d06271aa77c67ef110445 # main
       id: precommit
       with:
         autoupdate: true
 
     - name: Push pre-commit changes
-      uses: boidolr/actions/git-push@d87fde10d5386f84f4ac1cd9b6becb61b7b892fe # main
+      uses: boidolr/actions/git-push@47f62c14dbb70a62193d06271aa77c67ef110445 # main
       if: ${{ steps.precommit.outputs.update_log }}
       with:
         message: |
