@@ -5,7 +5,7 @@ inputs:
   python-version:
     required: false
     description: Python version to run tests with
-    default: '314'
+    default: '315'
   working-directory:
     required: false
     description: Repository to run tox in
@@ -15,10 +15,10 @@ outputs: {}
 runs:
   using: composite
   steps:
-  - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+  - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
     env:
       # renovate: datasource=github-releases depName=astral-sh/uv
-      UV_VERSION: 0.12.8
+      UV_VERSION: 0.13.1
     with:
       enable-cache: true
       cache-suffix: py-tox-${{ inputs.python-version }}
